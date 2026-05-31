@@ -1,0 +1,254 @@
+/* ===========================
+   承认吧，你就是_____ — 适配度页
+   用户人格 vs 其他15种关系卡片
+   =========================== */
+
+/* ---- 头部 ---- */
+.comp-header {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 24px 20px 12px;
+  opacity: 0;
+  animation: fadeSlideUp 0.7s 0.1s ease-out forwards;
+}
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.78rem; color: rgba(180,170,200,0.5);
+  text-decoration: none; letter-spacing: 0.04em;
+  transition: color 0.25s, text-shadow 0.25s;
+  margin-bottom: 18px;
+}
+.back-btn:hover { color: rgba(192,132,252,0.7); text-shadow: 0 0 8px rgba(192,132,252,0.2); }
+.back-arrow { font-size: 0.9rem; }
+
+/* 用户卡片 */
+.user-card {
+  width: 100%; max-width: 380px;
+  margin: 0 auto 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 14px;
+  background: rgba(168,85,247,0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 24px rgba(168,85,247,0.08);
+  position: relative;
+  overflow: hidden;
+}
+.user-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.3), transparent);
+}
+.user-card-label {
+  font-size: 0.58rem; font-weight: 700;
+  color: rgba(192,132,252,0.45);
+  font-family: "SF Mono","JetBrains Mono","Cascadia Code","Consolas",monospace;
+  letter-spacing: 0.12em; margin-bottom: 6px;
+}
+.user-card-name {
+  font-size: 2rem; font-weight: 900;
+  color: #f3f0f9; letter-spacing: 0.05em;
+  text-shadow: 0 0 18px rgba(192,132,252,0.4), 0 0 40px rgba(168,85,247,0.2);
+  margin-bottom: 6px;
+}
+.user-card.rare .user-card-name {
+  color: #f9a8d4;
+  text-shadow: 0 0 20px rgba(249,168,212,0.5), 0 0 50px rgba(249,168,212,0.2);
+}
+.user-card-knife {
+  font-size: 0.78rem; color: rgba(249,168,212,0.5);
+  font-weight: 500; letter-spacing: 0.02em;
+}
+
+/* 头部装饰 */
+.header-ornament {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; max-width: 280px; margin: 0 auto 10px;
+}
+.header-ornament .orn-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,0.2), transparent);
+}
+.header-ornament .orn-symbol {
+  font-size: 0.7rem; flex-shrink: 0;
+}
+
+.section-heading {
+  font-size: 1rem; font-weight: 700; letter-spacing: 0.06em;
+  color: rgba(211,201,230,0.7);
+  margin-bottom: 4px;
+}
+.section-sub {
+  font-size: 0.68rem; color: rgba(180,170,200,0.3);
+  letter-spacing: 0.04em;
+}
+
+/* ---- 适配度列表 ---- */
+.comp-list {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column;
+  gap: 10px;
+  width: 100%; max-width: 480px;
+  margin: 16px auto 0;
+  padding: 0 18px 40px;
+  opacity: 0;
+  animation: fadeSlideUp 0.7s 0.3s ease-out forwards;
+}
+
+/* 单条适配卡片 */
+.comp-card {
+  display: flex; align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+  border: 1px solid rgba(168,85,247,0.08);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.015);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1.2);
+  -webkit-tap-highlight-color: transparent;
+  animation: cardSlideIn 0.45s ease-out both;
+  position: relative;
+  overflow: hidden;
+}
+.comp-card::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px; border-radius: 0 2px 2px 0;
+  transition: width 0.3s;
+}
+.comp-card:hover {
+  border-color: rgba(168,85,247,0.22);
+  box-shadow: 0 0 18px rgba(168,85,247,0.06);
+  transform: translateX(3px);
+}
+.comp-card:active { transform: scale(0.98); }
+
+/* 等级颜色条 */
+.comp-card.lvl-perfect::after { background: #f472b6; box-shadow: 0 0 8px rgba(244,114,182,0.4); }
+.comp-card.lvl-great::after   { background: #c084fc; box-shadow: 0 0 8px rgba(192,132,252,0.4); }
+.comp-card.lvl-okay::after    { background: #7ec8c0; box-shadow: 0 0 8px rgba(126,200,192,0.4); }
+.comp-card.lvl-meh::after     { background: #a78bfa; box-shadow: 0 0 8px rgba(167,139,250,0.3); }
+.comp-card.lvl-danger::after  { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.4); }
+
+/* 等级卡片边框微调 */
+.comp-card.lvl-perfect { border-color: rgba(244,114,182,0.18); background: rgba(244,114,182,0.025); }
+.comp-card.lvl-danger  { border-color: rgba(239,68,68,0.13); background: rgba(239,68,68,0.018); }
+
+.comp-rank {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(168,85,247,0.1);
+}
+.lvl-perfect .comp-rank { border-color: rgba(244,114,182,0.25); animation: rankGlow 2s ease-in-out infinite; }
+.lvl-danger .comp-rank  { border-color: rgba(239,68,68,0.2); }
+@keyframes rankGlow {
+  0%,100%{ box-shadow: 0 0 8px rgba(244,114,182,0.1); }
+  50%{ box-shadow: 0 0 18px rgba(244,114,182,0.2); }
+}
+.rank-emoji { font-size: 1.3rem; line-height: 1; }
+.rank-label {
+  font-size: 0.45rem; font-weight: 700;
+  color: rgba(180,170,200,0.4);
+  letter-spacing: 0.06em;
+  margin-top: 1px;
+}
+.lvl-perfect .rank-label { color: rgba(244,114,182,0.55); }
+.lvl-danger .rank-label  { color: rgba(239,68,68,0.5); }
+
+.comp-portrait {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(168,85,247,0.15);
+  transition: border-color 0.3s;
+}
+
+.comp-card:hover .comp-portrait {
+  border-color: rgba(168,85,247,0.35);
+}
+
+.comp-info { flex: 1; min-width: 0; }
+.comp-target-name {
+  font-size: 1rem; font-weight: 800; color: #f3f0f9;
+  letter-spacing: 0.03em; margin-bottom: 4px;
+}
+.comp-desc {
+  font-size: 0.72rem; color: rgba(211,201,230,0.5);
+  line-height: 1.45; letter-spacing: 0.02em;
+}
+
+.comp-score-badge {
+  flex-shrink: 0;
+  font-size: 0.62rem; font-weight: 700;
+  padding: 4px 8px; border-radius: 8px;
+  color: rgba(180,170,200,0.35);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(168,85,247,0.08);
+  font-family: "SF Mono","JetBrains Mono","Cascadia Code","Consolas",monospace;
+}
+
+/* 展开详情（点击后） */
+.comp-detail {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(168,85,247,0.08);
+  font-size: 0.75rem; color: rgba(211,201,230,0.45);
+  line-height: 1.6;
+}
+.comp-card.expanded .comp-detail { display: block; }
+
+.comp-card.expanded {
+  border-color: rgba(168,85,247,0.2);
+  box-shadow: 0 0 20px rgba(168,85,247,0.08);
+}
+
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ---- 底部 ---- */
+.comp-footer {
+  position: relative; z-index: 10;
+  text-align: center;
+  padding: 0 20px 40px;
+  opacity: 0;
+  animation: fadeSlideUp 0.7s 0.5s ease-out forwards;
+}
+.comp-footer .footer-link {
+  font-size: 0.73rem; color: rgba(180,170,200,0.35);
+  text-decoration: none; letter-spacing: 0.04em;
+  transition: color 0.25s, text-shadow 0.25s;
+}
+.comp-footer .footer-link:hover {
+  color: rgba(192,132,252,0.65);
+  text-shadow: 0 0 8px rgba(192,132,252,0.2);
+}
+
+/* ---- 响应式 ---- */
+@media (max-width: 360px) {
+  .comp-header { padding: 20px 14px 8px; }
+  .user-card { padding: 14px 16px; }
+  .user-card-name { font-size: 1.5rem; }
+  .comp-list { padding: 0 12px 32px; gap: 8px; }
+  .comp-card { padding: 12px 10px; gap: 8px; }
+  .comp-rank { width: 40px; height: 40px; }
+  .comp-target-name { font-size: 0.9rem; }
+  .comp-desc { font-size: 0.68rem; }
+}
+
+@media (min-width: 768px) {
+  .comp-list { max-width: 560px; padding: 0 30px 50px; }
+  .user-card { max-width: 420px; }
+  .comp-card { padding: 18px 16px; }
+  .comp-target-name { font-size: 1.05rem; }
+}

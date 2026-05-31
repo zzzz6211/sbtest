@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>全人格图鉴 — 承认吧，你就是_____</title>
+  <link rel="stylesheet" href="style.css?v=20260529">
+  <link rel="stylesheet" href="gallery.css?v=20260530">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <canvas id="particles"></canvas>
+
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- 标题区 -->
+  <header class="gallery-header">
+    <a href="result.html" class="back-btn">
+      <span class="back-arrow">←</span>
+      <span>返回审判书</span>
+    </a>
+    <div class="header-ornament">
+      <span class="orn-line"></span>
+      <span class="orn-symbol">◆</span>
+      <span class="orn-line"></span>
+    </div>
+    <h1 class="header-title">全 16 种人格图鉴</h1>
+    <p class="header-sub">每一把刀，都切向一种灵魂</p>
+  </header>
+
+  <!-- 卡片网格 -->
+  <main class="gallery-grid" id="galleryGrid"></main>
+
+  <!-- 详情弹窗 -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card" id="modalCard">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-inner" id="modalInner"></div>
+    </div>
+  </div>
+
+  <script src="script.js?v=20260529"></script>
+  <script src="gallery.js?v=20260531"></script>
+</body>
+</html>

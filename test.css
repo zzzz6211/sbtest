@@ -1,0 +1,324 @@
+/* ===========================
+   承认吧，你就是_____ — 测试页样式
+   紫霓虹 + 薄荷绿点缀 + 丰富视觉层
+   =========================== */
+
+/* ---- 网感特效画布 ---- */
+#glitchFx {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none;
+}
+
+/* ---- 薄荷绿光晕（打破沉闷） ---- */
+.orb-mint {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(126,200,192,0.28) 0%, transparent 70%);
+  top: 30%; left: 25%;
+  filter: blur(130px);
+  opacity: 0.18;
+  border-radius: 50%;
+  animation: orbFloatMint 15s ease-in-out infinite;
+  position: absolute;
+  pointer-events: none;
+}
+
+@keyframes orbFloatMint {
+  0%,100%{transform:translate(0,0) scale(1)}
+  30%{transform:translate(35px,-45px) scale(1.12)}
+  60%{transform:translate(-25px,20px) scale(0.9)}
+  85%{transform:translate(15px,35px) scale(1.06)}
+}
+
+/* ---- 题目区光晕 ---- */
+.question-aura {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; height: 500px;
+  background: radial-gradient(ellipse, rgba(168,85,247,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 4;
+  animation: auraBreathe 5s ease-in-out infinite;
+}
+
+@keyframes auraBreathe {
+  0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(0.98)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+}
+
+/* ---- 进度条 ---- */
+.progress-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px 0;
+}
+
+.progress-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #a855f7, #7ec8c0, #c084fc);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(168,85,247,0.5), 0 0 24px rgba(126,200,192,0.2);
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+/* 进度闪烁粒子 */
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 50%; right: 0;
+  transform: translateY(-50%);
+  width: 6px; height: 6px;
+  background: #c084fc;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #c084fc, 0 0 20px rgba(168,85,247,0.8);
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+  0%,100%{opacity:0.5;box-shadow:0 0 8px #c084fc,0 0 16px rgba(168,85,247,0.5)}
+  50%{opacity:1;box-shadow:0 0 16px #c084fc,0 0 32px rgba(168,85,247,0.9)}
+}
+
+.progress-num {
+  font-size: 0.78rem;
+  color: rgba(180,170,200,0.5);
+  font-family: "SF Mono","JetBrains Mono","Cascadia Code","Consolas",monospace;
+  white-space: nowrap;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ---- 主容器 ---- */
+.test-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 80px 24px 50px;
+}
+
+.question-stage {
+  width: 100%;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.question-stage.fade-out {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+
+.question-stage.fade-in {
+  animation: questionIn 0.4s ease-out forwards;
+}
+
+@keyframes questionIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- 题号 ---- */
+.question-number {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(126,200,192,0.55);
+  margin-bottom: 10px;
+  font-family: "SF Mono","JetBrains Mono","Cascadia Code","Consolas",monospace;
+}
+
+/* ---- 题目文字 ---- */
+.question-text {
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.65;
+  color: #f3f0f9;
+  margin-bottom: 32px;
+  text-align: left;
+  letter-spacing: 0.03em;
+}
+
+/* ---- 选项列表 ---- */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.option-btn {
+  position: relative;
+  width: 100%;
+  padding: 16px 18px;
+  text-align: left;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: rgba(230,224,240,0.82);
+  background: rgba(255,255,255,0.022);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168,85,247,0.1);
+  border-left: 2px solid rgba(168,85,247,0.2);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1.2);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+.option-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(126,200,192,0.03));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.option-label {
+  display: inline-block;
+  width: 1.5em; height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-right: 10px;
+  color: rgba(168,85,247,0.45);
+  background: rgba(168,85,247,0.06);
+  border: 1px solid rgba(168,85,247,0.12);
+  transition: all 0.3s ease;
+  vertical-align: middle;
+}
+
+/* hover */
+.option-btn:hover {
+  border-color: rgba(168,85,247,0.3);
+  border-left-color: rgba(168,85,247,0.5);
+  box-shadow: 0 0 20px rgba(168,85,247,0.08), 0 0 6px rgba(126,200,192,0.06);
+  color: #f3f0f9;
+}
+.option-btn:hover::before { opacity: 1; }
+.option-btn:hover .option-label {
+  color: #d8b4fe;
+  border-color: rgba(168,85,247,0.35);
+  background: rgba(168,85,247,0.12);
+}
+
+/* 选中 */
+.option-btn.selected {
+  border-color: rgba(168,85,247,0.45);
+  border-left-color: rgba(126,200,192,0.6);
+  background: rgba(168,85,247,0.08);
+  color: #fff;
+  box-shadow:
+    0 0 22px rgba(168,85,247,0.18),
+    0 0 8px rgba(126,200,192,0.1),
+    inset 0 0 22px rgba(168,85,247,0.04);
+}
+.option-btn.selected .option-label {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(168,85,247,0.5), rgba(126,200,192,0.3));
+  border-color: rgba(168,85,247,0.5);
+  box-shadow: 0 0 10px rgba(168,85,247,0.25);
+}
+.option-btn.selected::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  border: 1px solid rgba(192,132,252,0.28);
+  pointer-events: none;
+}
+
+/* 禁用 */
+.option-btn.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ---- 下一题按钮 ---- */
+.btn-next {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  margin-top: 36px;
+  padding: 16px 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: rgba(243,240,249,0.3);
+  background: rgba(168,85,247,0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168,85,247,0.12);
+  border-radius: 16px;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  transition: all 0.35s cubic-bezier(0.25,0.8,0.25,1.2);
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-next-text { position: relative; z-index: 2; }
+.btn-next-glow {
+  position: absolute; inset: -2px; z-index: 1;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #a855f7, #7ec8c0, #7c3aed);
+  opacity: 0; filter: blur(18px);
+  transition: opacity 0.4s ease;
+}
+
+.btn-next:not(:disabled) {
+  color: #f3f0f9;
+  border-color: rgba(168,85,247,0.3);
+  background: rgba(168,85,247,0.06);
+  box-shadow: 0 0 18px rgba(168,85,247,0.06);
+}
+.btn-next:not(:disabled):hover {
+  border-color: rgba(168,85,247,0.5);
+  box-shadow: 0 0 32px rgba(168,85,247,0.18), 0 0 60px rgba(126,200,192,0.08);
+  transform: translateY(-2px);
+}
+.btn-next:not(:disabled):hover .btn-next-glow { opacity: 0.25; }
+.btn-next:not(:disabled):active { transform: scale(0.96); transition: transform 0.12s ease; }
+
+.btn-next.is-last {
+  border-color: rgba(126,200,192,0.4);
+  background: rgba(126,200,192,0.06);
+  box-shadow: 0 0 28px rgba(126,200,192,0.12);
+}
+
+/* ---- 响应式 ---- */
+@media (max-width: 360px) {
+  .test-container { padding: 70px 16px 40px; }
+  .question-text { font-size: 0.98rem; margin-bottom: 24px; }
+  .option-btn { padding: 14px 14px; font-size: 0.88rem; }
+  .btn-next { max-width: 280px; margin-top: 28px; }
+  .orb-mint { width: 200px; height: 200px; }
+  .question-aura { width: 350px; height: 350px; }
+}
+
+@media (min-width: 768px) {
+  .test-container { padding: 90px 32px 60px; max-width: 580px; }
+  .option-btn { padding: 18px 22px; font-size: 1rem; }
+  .btn-next { max-width: 380px; margin-top: 44px; }
+  .question-aura { width: 700px; height: 550px; }
+}

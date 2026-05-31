@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>测试中 — 承认吧，你就是_____</title>
+  <link rel="stylesheet" href="style.css?v=20260529">
+  <link rel="stylesheet" href="test.css?v=20260529b">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <canvas id="particles"></canvas>
+  <canvas id="glitchFx"></canvas>
+
+  <!-- 光晕层：4个紫 + 1个薄荷绿打破压抑 -->
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+    <div class="orb orb-mint"></div>
+  </div>
+
+  <!-- 装饰几何 -->
+  <div class="deco-geo deco-ring-1"></div>
+  <div class="deco-geo deco-ring-2"></div>
+  <div class="deco-geo deco-diamond"></div>
+  <div class="deco-geo deco-cross"></div>
+  <div class="deco-line deco-line-top"></div>
+  <div class="deco-line deco-line-bottom"></div>
+
+  <!-- 题目区光晕 -->
+  <div class="question-aura"></div>
+
+  <!-- 进度条 -->
+  <div class="progress-wrap">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <span class="progress-num" id="progressNum">1/30</span>
+  </div>
+
+  <!-- 题目区域 -->
+  <main class="test-container" id="testContainer">
+    <div class="question-stage" id="questionStage">
+      <div class="question-number" id="questionNumber">Q1</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+    </div>
+
+    <button class="btn-next" id="btnNext" disabled>
+      <span class="btn-next-text">下一题</span>
+      <span class="btn-next-glow"></span>
+    </button>
+  </main>
+
+  <script src="script.js?v=20260529"></script>
+  <script src="test.js?v=20260529g"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>你的审判书 — 承认吧，你就是_____</title>
+  <link rel="stylesheet" href="style.css?v=20260529">
+  <link rel="stylesheet" href="result.css?v=20260530d">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <canvas id="particles"></canvas>
+  <canvas id="verdictFx"></canvas>
+
+  <!-- 光晕 -->
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ====== 审判书主容器 ====== -->
+  <main class="verdict-dossier">
+
+    <!-- 顶部机密印章 -->
+    <div class="dossier-stamp">
+      <div class="stamp-ring"></div>
+      <div class="stamp-text">机密档案</div>
+      <div class="stamp-sub">CONFIDENTIAL</div>
+      <div class="stamp-no">FILE NO. <span id="fileNo">2026-0001</span></div>
+    </div>
+
+    <!-- 封印线 -->
+    <div class="seal-line">
+      <span class="seal-dot"></span>
+      <span class="seal-label">互联网人格审判书</span>
+      <span class="seal-dot"></span>
+    </div>
+
+    <!-- 人格名称 -->
+    <div class="name-shrine" id="nameShrine">
+      <div class="name-aura"></div>
+      <img class="portrait-img" id="portraitImg" src="" alt="">
+      <div class="name-subtitle">经系统判定，你的人格类型为</div>
+      <h1 class="name-title" id="personaName">_____</h1>
+    </div>
+
+    <!-- 分割装饰 -->
+    <div class="divider-ornament">
+      <span class="orn-line"></span>
+      <span class="orn-symbol">◆</span>
+      <span class="orn-line"></span>
+    </div>
+
+    <!-- 🔪 -->
+    <section class="section-knife" id="sectionKnife">
+      <div class="section-icon">🔪</div>
+      <p class="knife-quote" id="knifeText"></p>
+    </section>
+
+    <!-- 趣味文字 -->
+    <div class="easter-egg" id="verdictFun">
+      <p class="egg-text" id="funText"></p>
+    </div>
+
+    <!-- 📖 人格画像 -->
+    <section class="section-portrait" id="sectionPortrait">
+      <div class="section-head">
+        <span class="section-icon">📖</span>
+        <span class="section-title">人格画像</span>
+      </div>
+      <p class="portrait-text" id="descText"></p>
+    </section>
+
+    <!-- 🧠 情绪分析 -->
+    <section class="section-emotion" id="sectionEmotion">
+      <div class="section-head">
+        <span class="section-icon">🧠</span>
+        <span class="section-title">情绪模式分析</span>
+      </div>
+      <div class="emotion-bars" id="emotionBars"></div>
+      <p class="emotion-text" id="emotionText"></p>
+    </section>
+
+    <!-- 🏷️ 标签 -->
+    <div class="tag-cluster" id="verdictTags"></div>
+
+    <!-- 分割 -->
+    <div class="divider-dots">
+      <span>·</span><span>·</span><span>·</span>
+    </div>
+
+    <!-- 按钮区 -->
+    <div class="action-group">
+      <button class="action-btn primary" id="btnShare">
+        <span class="btn-icon">📸</span>
+        <span>保存结果卡片</span>
+      </button>
+      <button class="action-btn" id="btnCompatibility">
+        <span class="btn-icon">🔗</span>
+        <span>查看适配度</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+
+    <!-- 底部入口 -->
+    <nav class="dossier-footer">
+      <a href="#" class="footer-link" id="linkAll">查看全部 16 种人格</a>
+      <span class="footer-divider">·</span>
+      <a href="test.html" class="footer-link">让朋友也来测</a>
+      <span class="footer-divider">·</span>
+      <a href="test.html" class="footer-link">重新测试</a>
+    </nav>
+
+  </main>
+
+  <script src="script.js?v=20260529"></script>
+  <script src="result.js?v=20260531"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>适配度 — 承认吧，你就是_____</title>
+  <link rel="stylesheet" href="style.css?v=20260529">
+  <link rel="stylesheet" href="compatibility.css?v=20260530">
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <canvas id="particles"></canvas>
+
+  <div class="orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- 头部 -->
+  <header class="comp-header" id="compHeader">
+    <a href="result.html" class="back-btn">
+      <span class="back-arrow">←</span>
+      <span>返回审判书</span>
+    </a>
+
+    <!-- 用户人格卡片 -->
+    <div class="user-card" id="userCard">
+      <div class="user-card-label">你的人格</div>
+      <div class="user-card-name" id="userName">_____</div>
+      <div class="user-card-knife" id="userKnife"></div>
+    </div>
+
+    <div class="header-ornament">
+      <span class="orn-line"></span>
+      <span class="orn-symbol">🔗</span>
+      <span class="orn-line"></span>
+    </div>
+    <h2 class="section-heading">与你的人格适配度</h2>
+    <p class="section-sub">16 种人格 · 120 组关系 · 你的 15 种可能性</p>
+  </header>
+
+  <!-- 适配度列表 -->
+  <main class="comp-list" id="compList"></main>
+
+  <!-- 底部图鉴入口 -->
+  <footer class="comp-footer">
+    <a href="gallery.html" class="footer-link">查看全部 16 种人格图鉴 →</a>
+  </footer>
+
+  <script src="script.js?v=20260529"></script>
+  <script src="compatibility.js?v=20260531"></script>
+</body>
+</html>
