@@ -254,35 +254,6 @@
     c.toBlob(function(b){var u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='审判书_'+persona.name+'.png';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);},'image/png',0.95);
   }
 
-  // ====== 数据提交（优雅降级：后端不可用时静默失败） ======
-  function submitResult(answers, scores, persona, matchDims) {
-    if (!answers || answers.length < 30) return;
-    var payload = {
-      answers: answers,
-      scores: { A: scores.A, E: scores.E, S: scores.S, D: scores.D, O: scores.O, I: scores.I },
-      persona: persona.name,
-      match_dims: matchDims || 0,
-      is_easter_egg: persona.isEasterEgg || false,
-      timestamp: new Date().toISOString(),
-      user_agent: navigator.userAgent,
-      screen_size: (window.screen.width || '') + 'x' + (window.screen.height || '')
-    };
-    try {
-      var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon('/api/submit', blob);
-      } else {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/submit', true);
-        xhr.timeout = 3000;
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(payload));
-      }
-    } catch (e) {
-      // 后端不可用 — 静默忽略，不影响用户体验
-    }
-  }
-
   // ====== 启动 ======
   function init() {
     initFx();
@@ -297,7 +268,6 @@
       persona = PERSONAS['血包']; scores = persona.profile; matchDims = null;
     }
     render(persona, scores, matchDims);
-    submitResult(answers, scores, persona, matchDims);
     initButtons(persona.name, persona);
     setTimeout(function(){
       if(persona.isEasterEgg){burstAt(fw/2,fh*0.28,100);setTimeout(function(){burstAt(fw/2,fh*0.28,60);},600);}
