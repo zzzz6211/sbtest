@@ -99,6 +99,15 @@
       display: none !important;
     }
 
+    /* 返回按钮可见性 */
+    html.is-mobile .back-btn {
+      color: rgba(200,190,220,0.7) !important;
+      font-size: 0.85rem !important;
+    }
+    html.is-mobile .back-btn:active {
+      color: rgba(192,132,252,0.9) !important;
+    }
+
     /* 弹窗样式（移动端动画） */
     @keyframes cardInMobile {
       from { opacity: 0; transform: translateX(-12px); }
@@ -299,11 +308,21 @@
             overlay.addEventListener('touchend', function(e){ if(e.target===overlay){ e.preventDefault(); close(); }});
           }
 
+          // 滑动不误触：记录 touchstart 位置，移动超过 10px 算滑动
+          var tsX = 0, tsY = 0;
+          newCard.addEventListener('touchstart', function(e){
+            tsX = e.touches[0].clientX; tsY = e.touches[0].clientY;
+          }, {passive: true});
           newCard.addEventListener('click', function(e){
             if (IS_MOBILE) { e.stopPropagation(); showModal(); }
           });
           newCard.addEventListener('touchend', function(e){
-            if (IS_MOBILE) { e.preventDefault(); e.stopPropagation(); showModal(); }
+            if (!IS_MOBILE) return;
+            var dx = Math.abs(e.changedTouches[0].clientX - tsX);
+            var dy = Math.abs(e.changedTouches[0].clientY - tsY);
+            if (dx < 10 && dy < 10) {  // 轻点才触发，滑动忽略
+              e.preventDefault(); e.stopPropagation(); showModal();
+            }
           });
         })(cards[i]);
       }
