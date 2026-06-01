@@ -462,6 +462,7 @@
         }
           personaName = bestKey || '血包';
           console.log('[适配度页] 匹配人格:', personaName);
+        }
         } catch(e) { console.error('[适配度页] 计算/匹配失败:', e); personaName = null; }
       }
     }
