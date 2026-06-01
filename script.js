@@ -152,7 +152,7 @@
   });
   btnStart.addEventListener('touchend', function (e) {
     e.preventDefault();
-    this.click();
+    window.location.href = 'test.html';
   });
 
   // 启动

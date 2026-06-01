@@ -345,7 +345,15 @@
     var btns = optionsList.querySelectorAll('.option-btn');
     for (var j = 0; j < btns.length; j++) {
       btns[j].addEventListener('click', onOptionClick);
-      btns[j].addEventListener('touchend', function(e) { e.preventDefault(); this.click(); });
+      btns[j].addEventListener('touchend', function(e) {
+        e.preventDefault();
+        var btn = this;
+        var prev = optionsList.querySelector('.option-btn.selected');
+        if (prev) { prev.classList.remove('selected'); }
+        btn.classList.add('selected');
+        selectedOption = parseInt(btn.getAttribute('data-index'));
+        updateNextButton();
+      });
     }
 
     // 更新进度条
@@ -475,7 +483,7 @@
   // 按钮事件
   // ==========================================
   btnNext.addEventListener('click', goToNext);
-  btnNext.addEventListener('touchend', function(e) { e.preventDefault(); this.click(); });
+  btnNext.addEventListener('touchend', function(e) { e.preventDefault(); goToNext(); });
 
   // ==========================================
   // 网感特效层（搞笑抽象互联网风）
