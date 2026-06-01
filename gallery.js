@@ -191,10 +191,15 @@
     }
     grid.innerHTML = html;
 
-    // 绑定点击
+    // 绑定点击（click + touchend 兼容移动端）
     var cards = grid.querySelectorAll('.persona-card');
     for (var k = 0; k < cards.length; k++) {
       cards[k].addEventListener('click', function () {
+        var key = this.getAttribute('data-key');
+        openModal(PERSONAS[key]);
+      });
+      cards[k].addEventListener('touchend', function(e) {
+        e.preventDefault();
         var key = this.getAttribute('data-key');
         openModal(PERSONAS[key]);
       });
@@ -281,9 +286,16 @@
   function init() {
     renderGrid();
 
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalOverlay').addEventListener('click', function (e) {
+    var modalClose = document.getElementById('modalClose');
+    modalClose.addEventListener('click', closeModal);
+    modalClose.addEventListener('touchend', function(e) { e.preventDefault(); closeModal(); });
+
+    var overlay = document.getElementById('modalOverlay');
+    overlay.addEventListener('click', function (e) {
       if (e.target === this) closeModal();
+    });
+    overlay.addEventListener('touchend', function(e) {
+      if (e.target === this || !e.target.closest('#modalCard')) { e.preventDefault(); closeModal(); }
     });
 
     // ESC 关闭

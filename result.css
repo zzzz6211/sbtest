@@ -514,6 +514,47 @@
 }
 
 /* ===========================
+   可见性兜底：防止动画失败导致内容不可见
+   =========================== */
+
+/* prefers-reduced-motion: 跳过动画直接显示 */
+@media (prefers-reduced-motion: reduce) {
+  .dossier-stamp,
+  .seal-line,
+  .name-shrine,
+  .divider-ornament,
+  .section-knife,
+  .section-portrait,
+  .section-emotion,
+  .easter-egg,
+  .tag-cluster,
+  .divider-dots,
+  .action-group,
+  .dossier-footer {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    animation: none !important;
+  }
+}
+
+/* JS 成功初始化后，强制所有区块可见 */
+html.js-loaded .dossier-stamp,
+html.js-loaded .seal-line,
+html.js-loaded .name-shrine,
+html.js-loaded .divider-ornament,
+html.js-loaded .section-knife,
+html.js-loaded .section-portrait,
+html.js-loaded .section-emotion,
+html.js-loaded .easter-egg,
+html.js-loaded .tag-cluster,
+html.js-loaded .divider-dots,
+html.js-loaded .action-group,
+html.js-loaded .dossier-footer {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ===========================
    响应式
    =========================== */
 @media (max-width: 360px) {

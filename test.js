@@ -341,10 +341,11 @@
     }
     optionsList.innerHTML = html;
 
-    // 绑定选项点击
+    // 绑定选项点击（click + touchend 兼容移动端）
     var btns = optionsList.querySelectorAll('.option-btn');
     for (var j = 0; j < btns.length; j++) {
       btns[j].addEventListener('click', onOptionClick);
+      btns[j].addEventListener('touchend', function(e) { e.preventDefault(); this.click(); });
     }
 
     // 更新进度条
@@ -474,6 +475,7 @@
   // 按钮事件
   // ==========================================
   btnNext.addEventListener('click', goToNext);
+  btnNext.addEventListener('touchend', function(e) { e.preventDefault(); this.click(); });
 
   // ==========================================
   // 网感特效层（搞笑抽象互联网风）

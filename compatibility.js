@@ -350,6 +350,10 @@
       cards[j].addEventListener('click', function () {
         this.classList.toggle('expanded');
       });
+      cards[j].addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.classList.toggle('expanded');
+      });
     }
   }
 
@@ -357,14 +361,24 @@
   // 启动
   // ==========================================
   function init() {
-    // 读取用户人格
-    var answersJson = localStorage.getItem('sbtest_answers');
+    console.log('[适配度页] init() 开始');
+
+    // 安全读取 localStorage
+    var answersJson = null;
+    try { answersJson = localStorage.getItem('sbtest_answers'); } catch(e) { console.error('[适配度页] localStorage 读取失败:', e); }
+    console.log('[适配度页] localStorage 数据:', answersJson ? '有(' + answersJson.length + '字符)' : '空');
+
     var personaName = null;
 
     if (answersJson) {
       // 复用 result.js 的匹配逻辑（简化版）
-      var answers = JSON.parse(answersJson);
-      var SCORE_MATRIX = [
+      var answers;
+      try { answers = JSON.parse(answersJson); console.log('[适配度页] JSON解析成功, 答案数:', answers.length); }
+      catch(e) { console.error('[适配度页] JSON解析失败:', e); answers = null; }
+
+      if (answers && Array.isArray(answers) && answers.length > 0) {
+        try {
+          var SCORE_MATRIX = [
         [{A:3,S:2}, {A:2,E:2}, {E:2,O:1}, {A:1,I:-2}],
         [{E:2,O:-2}, {O:2,I:1}, {E:2,O:2}, {E:2,O:-2}],
         [{E:-2,A:-2}, {E:2,S:2}, {O:2,E:1}, {I:-2,E:1}],
@@ -446,12 +460,15 @@
           var totalScore = euclidSim + catBonus;
           if (totalScore > bestScore) { bestScore = totalScore; bestKey = k; }
         }
-        personaName = bestKey || '血包';
+          personaName = bestKey || '血包';
+          console.log('[适配度页] 匹配人格:', personaName);
+        } catch(e) { console.error('[适配度页] 计算/匹配失败:', e); personaName = null; }
       }
     }
 
+    if (!personaName) { console.warn('[适配度页] 无有效答案，使用兜底人格'); personaName = '血包'; }
     var userPersona = PERSONAS[personaName] || PERSONAS['血包'];
-    render(userPersona);
+    try { render(userPersona); console.log('[适配度页] render() 成功'); } catch(e) { console.error('[适配度页] render() 失败:', e); }
   }
 
   if (document.readyState === 'loading') {

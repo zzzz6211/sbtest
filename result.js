@@ -113,6 +113,10 @@
   }
 
   function render(persona, scores, matchDims) {
+    // 守卫：关键 DOM 元素必须存在
+    var nameCheck = document.getElementById('personaName');
+    if (!nameCheck) { console.error('[结果页] render() 中止: personaName 元素不存在'); return; }
+
     document.getElementById('fileNo').textContent = '2026-' + String(persona.id).padStart(4, '0');
 
     // 画像
@@ -131,7 +135,8 @@
     if (persona.isEasterEgg) {
       nameEl.style.color = '#f9a8d4';
       nameEl.style.textShadow = '0 0 24px rgba(249,168,212,0.8), 0 0 60px rgba(249,168,212,0.5), 0 0 120px rgba(249,168,212,0.3)';
-      document.querySelector('.name-aura').style.background = 'radial-gradient(circle, rgba(249,168,212,0.1) 0%, rgba(249,168,212,0.04) 30%, transparent 65%)';
+      var auraEl = document.querySelector('.name-aura');
+      if (auraEl) auraEl.style.background = 'radial-gradient(circle, rgba(249,168,212,0.1) 0%, rgba(249,168,212,0.04) 30%, transparent 65%)';
     }
     // 显示维度契合度 (MBTI式)
     if (typeof matchDims === 'number') {
@@ -207,9 +212,18 @@
 
   // ====== 按钮 ======
   function initButtons(personaName, persona) {
-    document.getElementById('btnShare').addEventListener('click', function(){saveCard(persona);});
-    document.getElementById('btnCompatibility').addEventListener('click', function(){window.location.href='compatibility.html';});
-    document.getElementById('linkAll').addEventListener('click', function(e){e.preventDefault();window.location.href='gallery.html';});
+    var btnShare = document.getElementById('btnShare');
+    var btnComp = document.getElementById('btnCompatibility');
+    var linkAll = document.getElementById('linkAll');
+
+    btnShare.addEventListener('click', function(){saveCard(persona);});
+    btnShare.addEventListener('touchend', function(e){ e.preventDefault(); saveCard(persona); });
+
+    btnComp.addEventListener('click', function(){window.location.href='compatibility.html';});
+    btnComp.addEventListener('touchend', function(e){ e.preventDefault(); window.location.href='compatibility.html'; });
+
+    linkAll.addEventListener('click', function(e){e.preventDefault();window.location.href='gallery.html';});
+    linkAll.addEventListener('touchend', function(e){ e.preventDefault(); window.location.href='gallery.html'; });
   }
 
   // ====== 保存卡片 Canvas→PNG ======
@@ -256,21 +270,73 @@
 
   // ====== 启动 ======
   function init() {
-    initFx();
-    var answersJson = localStorage.getItem('sbtest_answers'), answers = null, persona, scores, matchDims;
+    console.log('[结果页] init() 开始');
+
+    // 1. 启动特效 Canvas
+    try { initFx(); console.log('[结果页] initFx() 成功'); } catch(e) { console.error('[结果页] initFx() 失败:', e); }
+
+    // 2. 安全读取 localStorage
+    var answersJson = null;
+    try { answersJson = localStorage.getItem('sbtest_answers'); } catch(e) { console.error('[结果页] localStorage 读取失败:', e); }
+    console.log('[结果页] localStorage 数据:', answersJson ? '有(' + answersJson.length + '字符)' : '空');
+
+    // 3. 安全解析 JSON
+    var answers = null;
     if (answersJson) {
-      answers = JSON.parse(answersJson);
-      scores = calculateScores(answers);
-      var result = findBestMatch(scores, answers);
-      persona = result.persona;
-      matchDims = result.matchDims;
-    } else {
+      try { answers = JSON.parse(answersJson); console.log('[结果页] JSON解析成功, 答案数:', answers.length); }
+      catch(e) { console.error('[结果页] JSON解析失败:', e); answers = null; }
+    }
+
+    // 4. 计算分数 + 匹配人格
+    var persona = null, scores = null, matchDims = null;
+    if (answers && Array.isArray(answers) && answers.length > 0) {
+      try {
+        scores = calculateScores(answers);
+        var result = findBestMatch(scores, answers);
+        persona = result.persona;
+        matchDims = result.matchDims;
+        console.log('[结果页] 匹配人格:', persona.name, '维度契合:', matchDims);
+      } catch(e) { console.error('[结果页] 计算/匹配失败:', e); persona = null; }
+    }
+
+    // 5. 极端情况兜底（无答案时用默认人格，避免白屏）
+    if (!persona) {
+      console.warn('[结果页] 无有效答案，使用兜底人格');
       persona = PERSONAS['血包']; scores = persona.profile; matchDims = null;
     }
-    render(persona, scores, matchDims);
-    initButtons(persona.name, persona);
+
+    // ★ 关键：先绑按钮（不依赖渲染成功），再渲染内容
+    try { initButtons(persona.name, persona); console.log('[结果页] initButtons() 成功'); } catch(e) { console.error('[结果页] initButtons() 失败:', e); }
+
+    try {
+      render(persona, scores, matchDims);
+      console.log('[结果页] render() 成功');
+    } catch(e) {
+      console.error('[结果页] render() 失败:', e);
+      // 紧急：至少显示人格名
+      var nameEl = document.getElementById('personaName');
+      if (nameEl) { nameEl.textContent = persona.name; nameEl.style.opacity = '1'; nameEl.style.color = '#f3f0f9'; }
+      var knifeEl = document.getElementById('knifeText');
+      if (knifeEl) { knifeEl.textContent = persona.knife; knifeEl.style.opacity = '1'; }
+    }
+
+    // 6. CSS 可见性兜底：2.5 秒后强制显示所有区块（防止动画不执行导致内容不可见）
     setTimeout(function(){
-      if(persona.isEasterEgg){burstAt(fw/2,fh*0.28,100);setTimeout(function(){burstAt(fw/2,fh*0.28,60);},600);}
+      document.documentElement.classList.add('js-loaded');
+      var sections = document.querySelectorAll('.verdict-dossier > *, .verdict-dossier .section-portrait, .verdict-dossier .section-emotion, .verdict-dossier .section-knife, .verdict-dossier .tag-cluster, .verdict-dossier .action-group, .verdict-dossier .dossier-footer');
+      for (var i = 0; i < sections.length; i++) {
+        sections[i].style.opacity = '1';
+        sections[i].style.transform = 'translateY(0)';
+      }
+      console.log('[结果页] CSS 可见性兜底执行完毕');
+    }, 2500);
+
+    // 7. 彩蛋特效
+    setTimeout(function(){
+      if(persona && persona.isEasterEgg){
+        try { burstAt(fw/2,fh*0.28,100); setTimeout(function(){burstAt(fw/2,fh*0.28,60);},600); console.log('[结果页] 彩蛋特效触发'); }
+        catch(e){ console.error('[结果页] 彩蛋特效失败:', e); }
+      }
     },1200);
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
