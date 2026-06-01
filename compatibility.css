@@ -1,6 +1,7 @@
 /* ===========================
    承认吧，你就是_____ — 适配度页
-   卡片网格 + 点击展开详情
+   桌面默认：2-3列卡片网格（保持原样）
+   手机端（<600px）：横向紧凑卡片
    =========================== */
 
 /* ---- 头部 ---- */
@@ -80,7 +81,9 @@
   letter-spacing: 0.04em;
 }
 
-/* ---- 卡片网格（图鉴同款 2 列） ---- */
+/* ===========================
+   桌面默认：2列卡片网格
+   =========================== */
 .comp-list {
   position: relative; z-index: 10;
   display: grid;
@@ -93,7 +96,7 @@
   animation: fadeSlideUp 0.7s 0.25s ease-out forwards;
 }
 
-/* ---- 单张适配度卡片 ---- */
+/* ---- 单张卡片（桌面默认：竖卡） ---- */
 .comp-card {
   position: relative;
   padding: 14px 12px 12px;
@@ -137,7 +140,7 @@
 .comp-card.lvl-perfect { border-color: rgba(244,114,182,0.18); background: rgba(244,114,182,0.02); }
 .comp-card.lvl-danger  { border-color: rgba(239,68,68,0.13); background: rgba(239,68,68,0.015); }
 
-/* 人格画像 */
+/* 人格画像（桌面：方形） */
 .comp-portrait {
   width: 100%;
   aspect-ratio: 1;
@@ -151,8 +154,15 @@
   border-color: rgba(168,85,247,0.4);
   box-shadow: 0 0 20px rgba(168,85,247,0.15);
 }
+.comp-card.lvl-perfect .comp-portrait { border-color: rgba(244,114,182,0.3); }
+.comp-card.lvl-danger  .comp-portrait { border-color: rgba(239,68,68,0.2); }
 
-/* 适配度等级标记 */
+/* 信息区域（桌面：正常流） */
+.comp-body {
+  display: contents;  /* 桌面端不影响布局，子元素直接参与卡片流 */
+}
+
+/* 等级行 */
 .comp-rank {
   display: flex; align-items: center; gap: 5px;
   margin-bottom: 6px;
@@ -184,7 +194,7 @@
   text-shadow: 0 0 12px rgba(192,132,252,0.3);
 }
 
-/* 适配描述（卡片上截断） */
+/* 刀子描述（桌面截断2行） */
 .comp-desc {
   font-size: 0.68rem; line-height: 1.5;
   color: rgba(249,168,212,0.55);
@@ -195,7 +205,7 @@
   overflow: hidden;
 }
 
-/* 展开详情 */
+/* 展开详情（桌面） */
 .comp-detail {
   display: none;
   margin-top: 8px;
@@ -210,15 +220,21 @@
   box-shadow: 0 0 24px rgba(168,85,247,0.1);
 }
 
-/* 卡片入场 */
+/* 卡片入场（桌面：从下滑入） */
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 顶部条等级颜色渗透 */
-.comp-card.lvl-perfect .comp-portrait { border-color: rgba(244,114,182,0.3); }
-.comp-card.lvl-danger  .comp-portrait { border-color: rgba(239,68,68,0.2); }
+/* 3列（平板） */
+@media (min-width: 768px) {
+  .comp-list {
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 720px; gap: 18px; padding: 16px 24px 60px;
+  }
+  .comp-card { padding: 16px 14px 14px; }
+  .comp-target-name { font-size: 1rem; }
+}
 
 /* ---- 底部 ---- */
 .comp-footer {
@@ -238,18 +254,217 @@
   text-shadow: 0 0 8px rgba(192,132,252,0.2);
 }
 
-/* ---- 响应式 ---- */
-@media (max-width: 360px) {
-  .comp-list { grid-template-columns: 1fr; padding: 10px 14px 40px; }
-  .comp-card { padding: 12px 10px 10px; }
-  .comp-target-name { font-size: 0.9rem; }
+/* ===========================
+   手机端（<600px）：横向紧凑卡片 + 弹窗详情
+   用 html.is-mobile 类选择器，不用 @media
+   优先级更高，也不依赖微信浏览器的媒体查询实现
+   =========================== */
+html.is-mobile .comp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 10px 40px;
 }
 
-@media (min-width: 768px) {
-  .comp-list {
-    grid-template-columns: 1fr 1fr 1fr;
-    max-width: 720px; gap: 18px; padding: 16px 24px 60px;
-  }
-  .comp-card { padding: 16px 14px 14px; }
-  .comp-target-name { font-size: 1rem; }
+html.is-mobile .comp-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  overflow: visible;
+}
+html.is-mobile .comp-card:hover {
+  transform: none;
+}
+html.is-mobile .comp-card:active { transform: scale(0.98); }
+html.is-mobile .comp-card::before {
+  background: radial-gradient(circle at 0% 50%, rgba(168,85,247,0.06) 0%, transparent 60%);
+}
+
+/* 等级色条 */
+html.is-mobile .comp-card::after {
+  top: 6px; bottom: 6px; width: 4px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* 圆形小头像 */
+html.is-mobile .comp-portrait {
+  width: 44px;
+  height: 44px;
+  aspect-ratio: auto;
+  border-radius: 50%;
+  margin-bottom: 0;
+  flex-shrink: 0;
+  border-width: 1.5px;
+}
+
+/* 信息区 */
+html.is-mobile .comp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* 等级行：确保星数完整显示 */
+html.is-mobile .comp-rank {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+  min-height: 20px;
+}
+html.is-mobile .rank-emoji {
+  font-size: 0.85rem;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+html.is-mobile .rank-label {
+  font-size: 0.55rem;
+  flex-shrink: 0;
+}
+html.is-mobile .comp-score-badge {
+  font-size: 0.55rem;
+  padding: 1px 6px;
+  flex-shrink: 0;
+}
+
+html.is-mobile .comp-target-name {
+  font-size: 0.88rem;
+  margin-bottom: 1px;
+  line-height: 1.2;
+}
+
+html.is-mobile .comp-desc {
+  display: block;
+  font-size: 0.64rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+/* 手机端不展开卡片，详情走弹窗 */
+html.is-mobile .comp-card .comp-detail {
+  display: none !important;
+}
+html.is-mobile .comp-card.expanded {
+  flex-wrap: nowrap;
+}
+
+/* 入场：从左侧滑入 */
+html.is-mobile .comp-list .comp-card {
+  animation-name: cardInMobile;
+}
+@keyframes cardInMobile {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ===========================
+   手机端详情弹窗
+   =========================== */
+.comp-modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(7,6,13,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.comp-modal-overlay.active {
+  opacity: 1; pointer-events: auto;
+}
+
+.comp-modal-card {
+  position: relative;
+  width: 100%; max-width: 440px;
+  max-height: 82vh;
+  overflow-y: auto;
+  padding: 28px 20px 32px;
+  border-radius: 20px 20px 0 0;
+  border: 1px solid rgba(168,85,247,0.15);
+  border-bottom: none;
+  background: rgba(18,14,36,0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 -8px 60px rgba(168,85,247,0.12), 0 -2px 120px rgba(0,0,0,0.4);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.comp-modal-overlay.active .comp-modal-card {
+  transform: translateY(0);
+}
+
+.comp-modal-close {
+  position: absolute; top: 12px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(168,85,247,0.2);
+  background: rgba(255,255,255,0.03);
+  color: rgba(200,190,220,0.6); font-size: 1rem; line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+.comp-modal-close:active {
+  border-color: rgba(192,132,252,0.5);
+  color: #c084fc;
+  box-shadow: 0 0 14px rgba(192,132,252,0.2);
+}
+
+.comp-modal-portrait {
+  display: block;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 12px;
+  border: 2px solid rgba(168,85,247,0.3);
+  box-shadow: 0 0 24px rgba(168,85,247,0.2);
+}
+
+.comp-modal-name {
+  text-align: center;
+  font-size: 1.5rem; font-weight: 900;
+  color: #f3f0f9; letter-spacing: 0.04em;
+  margin-bottom: 8px;
+  text-shadow: 0 0 18px rgba(192,132,252,0.35);
+}
+
+.comp-modal-rank {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+}
+.comp-modal-rank .rank-emoji {
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.comp-modal-rank .rank-label {
+  font-size: 0.68rem; font-weight: 700;
+  color: rgba(192,132,252,0.7);
+  letter-spacing: 0.06em;
+}
+.comp-modal-rank .comp-score-badge {
+  font-size: 0.68rem; font-weight: 700;
+  padding: 3px 8px; border-radius: 8px;
+  color: rgba(180,170,200,0.55);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(168,85,247,0.12);
+  font-family: "SF Mono","JetBrains Mono","Cascadia Code","Consolas",monospace;
+}
+
+.comp-modal-detail {
+  font-size: 0.85rem; line-height: 1.85;
+  color: rgba(226,215,240,0.65);
+  letter-spacing: 0.02em;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(168,85,247,0.04);
+  border: 1px solid rgba(168,85,247,0.08);
 }
