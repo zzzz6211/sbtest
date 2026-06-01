@@ -12,6 +12,9 @@
 
   <!-- ====== 手机端内联样式（绕过所有缓存） ====== -->
   <style id="inline-mobile-style">
+    /* 修复 body flex-row 导致页面水平溢出 */
+    body { flex-direction: column; justify-content: flex-start; align-items: stretch; }
+
     html.is-mobile .comp-list {
       display: flex !important;
       flex-direction: column !important;
