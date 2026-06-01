@@ -135,6 +135,7 @@ function calcBaseScore(a, b) {
   raw -= (a.profile.I / 100) * (b.profile.I / 100) * 18;
   var iGap = Math.abs(a.profile.I - b.profile.I);
   if (iGap >= 25) raw -= (iGap - 20) * 0.25;
+  if (iGap > 45) raw -= (iGap - 45) * 0.5;
   raw -= ((a.profile.I/100) * (1 - a.profile.A/100) + (b.profile.I/100) * (1 - b.profile.A/100)) * 10;
   raw += (a.profile.A / 100) * (b.profile.A / 100) * 10;
   var aGap = Math.abs(a.profile.A - b.profile.A);

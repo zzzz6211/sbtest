@@ -147,9 +147,10 @@
     // === 连续维度互动修正（替代旧阈值规则） ===
     // I 烈度交互：双方I越高越易冲突
     raw -= (a.profile.I / 100) * (b.profile.I / 100) * 18;
-    // I 烈度落差：≥25分差距 → 高烈度方压制低烈度方
+    // I 烈度落差：≥25分差距 → 高烈度方压制低烈度方；极端差距（>45）加倍惩罚
     var iGap = Math.abs(a.profile.I - b.profile.I);
     if (iGap >= 25) raw -= (iGap - 20) * 0.25;
+    if (iGap > 45) raw -= (iGap - 45) * 0.5;
     // I-A 复合：高烈度+低利他 = 易怒且不包容 → 双向计算
     raw -= ((a.profile.I/100) * (1 - a.profile.A/100) + (b.profile.I/100) * (1 - b.profile.A/100)) * 10;
     // A 利他共鸣：双高加分，落差>35扣分
