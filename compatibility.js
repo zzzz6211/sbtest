@@ -321,7 +321,7 @@
     // 按适配度降序
     others.sort(function (x, y) { return y.level * 100 + y.score - (x.level * 100 + x.score); });
 
-    // 渲染列表
+    // 渲染卡片网格
     var listEl = document.getElementById('compList');
     var html = '';
     for (var i = 0; i < others.length; i++) {
@@ -329,22 +329,21 @@
       var cfg = LEVEL_CONFIG[o.level];
       var cls = cfg.cls;
       html +=
-        '<div class="comp-card ' + cls + '" style="animation-delay:' + (i * 0.04) + 's" data-idx="' + i + '">' +
+        '<div class="comp-card ' + cls + '" style="animation-delay:' + (i * 0.03) + 's" data-idx="' + i + '">' +
+        '<img class="comp-portrait" src="人格画像/' + encodeURIComponent(o.persona.name) + '.jpg" alt="' + o.persona.name + '">' +
         '<div class="comp-rank">' +
         '<span class="rank-emoji">' + cfg.emoji + '</span>' +
         '<span class="rank-label">' + cfg.label + '</span>' +
+        '<span class="comp-score-badge">' + (o.score || '--') + '%</span>' +
         '</div>' +
-        '<img class="comp-portrait" src="人格画像/' + encodeURIComponent(o.persona.name) + '.jpg" alt="' + o.persona.name + '">' +
-        '<div class="comp-info">' +
         '<div class="comp-target-name">' + o.persona.name + '</div>' +
-        '<div class="comp-desc">' + o.desc + '</div>' +
-        '</div>' +
-        '<div class="comp-score-badge">' + (o.score || '--') + '%</div>' +
+        '<div class="comp-desc">' + o.persona.knife + '</div>' +
+        '<div class="comp-detail">' + o.desc + '</div>' +
         '</div>';
     }
     listEl.innerHTML = html;
 
-    // 绑定点击展开（移动端）
+    // 绑定点击展开详情
     var cards = listEl.querySelectorAll('.comp-card');
     for (var j = 0; j < cards.length; j++) {
       cards[j].addEventListener('click', function () {
